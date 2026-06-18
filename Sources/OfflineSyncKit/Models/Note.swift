@@ -8,7 +8,6 @@
 import SwiftData
 import Foundation
 
-@available(iOS 17, *)
 @Model class Note {
     var id: UUID
     var title: String
