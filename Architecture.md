@@ -15,3 +15,9 @@ Principle: Separation of Concerns
 - Outside code must go through SyncManager
 - Protects internal implementation
 - Principle: Encapsulation
+
+## Why SwiftData requires @Model on a class
+- Classes are reference types — one object, multiple references
+- SwiftData needs to track the same instance over time
+- Structs are value types — copies lose identity
+- Persistence requires identity
