@@ -9,3 +9,9 @@
 - Enables isolated testing per layer
 - Makes swapping implementations easier
 Principle: Separation of Concerns
+
+## Why private on SyncManager.storage
+- Only SyncManager should interact with storage directly
+- Outside code must go through SyncManager
+- Protects internal implementation
+- Principle: Encapsulation
