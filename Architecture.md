@@ -21,3 +21,8 @@ Principle: Separation of Concerns
 - SwiftData needs to track the same instance over time
 - Structs are value types — copies lose identity
 - Persistence requires identity
+
+## Why update() only calls context.save()
+- Note is a class with @Model — SwiftData tracks changes automatically
+- Mutating a property is enough; no explicit "update" call needed
+- save() persists whatever changes are pending
