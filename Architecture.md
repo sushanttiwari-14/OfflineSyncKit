@@ -26,3 +26,13 @@ Principle: Separation of Concerns
 - Note is a class with @Model — SwiftData tracks changes automatically
 - Mutating a property is enough; no explicit "update" call needed
 - save() persists whatever changes are pending
+
+## QuickTest vs real tests
+- QuickTest prints output — requires human judgment
+- Swift Testing uses #expect — automatic pass/fail
+- Real tests scale; manual printout reading doesn't
+
+## #expect vs #require
+- #expect: records failure, test keeps running (see all issues at once)
+- #require: stops test immediately if false (use when later code depends on it)
+

@@ -26,5 +26,6 @@ import SwiftData
 
     } catch {
         print("Error: \(error)")
+         
     }
 }
