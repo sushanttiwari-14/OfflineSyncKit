@@ -26,7 +26,7 @@ import Testing
 
 @Test func updateTest() async throws {
     let storage = MockNoteStorage()
-    var note = Note(title: "Original", content: "Hello")
+    let note = Note(title: "Original", content: "Hello")
     
     try storage.save(note)
     
