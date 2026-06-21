@@ -12,7 +12,7 @@ import Testing
     #expect(notes.count == 1)
     #expect(notes.first?.title == "Test")
 }
-
+// test for delete test
 @Test func deleteTest() async throws {
     let storage = MockNoteStorage()
     let note = Note(title: "ToDelete", content: "Bye")
@@ -24,6 +24,7 @@ import Testing
     #expect(notes.count == 0)
 }
 
+// test for updating note
 @Test func updateTest() async throws {
     let storage = MockNoteStorage()
     let note = Note(title: "Original", content: "Hello")
