@@ -6,15 +6,17 @@
 //
 
 import Foundation
+import SwiftData
 
-struct SyncOperation {
-    let id: UUID
-    let noteId: UUID
-    let type: OperationType
-    var status: SyncStatus
-    let createdAt: Date
+@Model class SyncOperation {
+    var id: UUID
+    var noteId: UUID
+    var type: OperationType
+    var status: String
+    var retryCount: Int
+    var createdAt: Date
     
-    enum OperationType {
+    enum OperationType: String, Codable {
         case create
         case update
         case delete
@@ -24,7 +26,8 @@ struct SyncOperation {
         self.id = UUID()
         self.noteId = noteId
         self.type = type
-        self.status = .pending
+        self.status = SyncStatus.pending.rawValue
+        self.retryCount = 0 
         self.createdAt = Date()
     }
 }
