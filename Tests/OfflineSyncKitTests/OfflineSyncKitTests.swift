@@ -1,4 +1,6 @@
 import Testing
+import SwiftData
+import Foundation
 @testable import OfflineSyncKit
 
 @Test func saveAndFetch() async throws {
@@ -36,4 +38,52 @@ import Testing
     
     let notes = try storage.fetchAll()
     #expect(notes.first?.title == "Updated")
+}
+
+@MainActor
+@Suite struct SyncQueueTests {
+    
+    @Test func enqueueAddsOperation() async throws {
+        // setup in-memory database
+        let config = ModelConfiguration(isStoredInMemoryOnly: true)
+        let container = try ModelContainer(for: SyncOperation.self, configurations: config)
+        let context = container.mainContext
+        let queue = SyncQueue(context: context)
+        
+        // enqueue an operation
+        let operation = SyncOperation(noteId: UUID(), type: .create)
+        try queue.enqueue(operation)
+        
+        // verify it's in the queue
+        let pending = try queue.pendingOperations()
+        #expect(pending.count == 1)
+    }
+    
+    @Test func markFailedUpdatesStatus() async throws {
+        let config = ModelConfiguration(isStoredInMemoryOnly: true)
+        let container = try ModelContainer(for: SyncOperation.self, configurations: config)
+        let context = container.mainContext
+        let queue = SyncQueue(context: context)
+        
+        let operation = SyncOperation(noteId: UUID(), type: .create)
+        try queue.enqueue(operation)
+        try queue.markFailed(operation)
+        
+        #expect(operation.status == "failed")
+        #expect(operation.retryCount == 1)
+    }
+    
+    @Test func removeDeletesOperation() async throws {
+        let config = ModelConfiguration(isStoredInMemoryOnly: true)
+        let container = try ModelContainer(for: SyncOperation.self, configurations: config)
+        let context = container.mainContext
+        let queue = SyncQueue(context: context)
+        
+        let operation = SyncOperation(noteId: UUID(), type: .create)
+        try queue.enqueue(operation)
+        try queue.remove(operation)
+        
+        let pending = try queue.pendingOperations()
+        #expect(pending.count == 0)
+    }
 }
