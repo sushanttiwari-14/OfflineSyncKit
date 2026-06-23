@@ -36,3 +36,8 @@ Principle: Separation of Concerns
 - #expect: records failure, test keeps running (see all issues at once)
 - #require: stops test immediately if false (use when later code depends on it)
 
+## Why SyncOperation uses let for most properties
+- id, noteId, type, createdAt never change after creation — let enforces this
+- status changes over the operation lifecycle — var allows this
+- Principle: make things immutable by default, mutable only when necessary
+
