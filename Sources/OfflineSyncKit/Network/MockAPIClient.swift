@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class MockAPIClient: NoteAPIClientProtocol {
+final class MockAPIClient: NoteAPIClientProtocol, @unchecked Sendable  {
     // controls whether calls succeed or fail
     var shouldFail: Bool = false
     

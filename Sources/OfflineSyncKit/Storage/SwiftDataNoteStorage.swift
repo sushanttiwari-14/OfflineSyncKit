@@ -7,7 +7,7 @@
 
 import SwiftData
 
-final class SwiftDataNoteStorage: NoteStorage {
+final class SwiftDataNoteStorage: NoteStorage, @unchecked Sendable {
     private let context: ModelContext
     
     init(context: ModelContext) {

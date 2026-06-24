@@ -5,7 +5,7 @@
 //  Created by sushant tiwari on 19/06/26.
 //
 
-final class MockNoteStorage: NoteStorage {
+final class MockNoteStorage: NoteStorage, @unchecked Sendable {
     private var notes: [Note] = []
     
     func save(_ note: Note) throws {

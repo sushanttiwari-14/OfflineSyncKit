@@ -5,7 +5,7 @@
 //  Created by sushant tiwari on 18/06/26.
 //
 
-protocol NoteStorage {
+protocol NoteStorage : Sendable {
     func save(_ note: Note) throws
     func fetchAll() throws -> [Note]
     func delete(_ note: Note) throws
