@@ -41,3 +41,9 @@ Principle: Separation of Concerns
 - status changes over the operation lifecycle — var allows this
 - Principle: make things immutable by default, mutable only when necessary
 
+## Why SyncManager is an actor
+- sync() could be triggered from multiple places simultaneously
+- Actor ensures only one sync runs at a time
+- Prevents data races on the operation queue
+- Compiler enforces safety — not the developer
+
