@@ -86,4 +86,20 @@ import Foundation
         let pending = try queue.pendingOperations()
         #expect(pending.count == 0)
     }
+    
+    @Test func removeOnlyDeletesOneOperation() async throws {
+            let config = ModelConfiguration(isStoredInMemoryOnly: true)
+            let container = try ModelContainer(for: SyncOperation.self, configurations: config)
+            let context = container.mainContext
+            let queue = SyncQueue(context: context)
+
+            let operation1 = SyncOperation(noteId: UUID(), type: .create)
+            let operation2 = SyncOperation(noteId: UUID(), type: .create)
+            try queue.enqueue(operation1)
+            try queue.enqueue(operation2)
+        
+            try queue.remove(operation1)
+            #expect(try queue.pendingOperations().count == 1)
+        
+    }
 }
