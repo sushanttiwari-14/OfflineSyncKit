@@ -66,3 +66,10 @@ Principle: Separation of Concerns
 - statusStream = reading end (UI observes this)
 - Native Swift alternative to Combine publishers
 
+## Rapid connectivity changes + multiple syncs
+- pathUpdateHandler can fire multiple times rapidly
+- Each fires sync() on SyncManager
+- Actor isolation ensures only one sync runs at a time
+- Others wait, find empty queue, exit immediately
+- No extra protection code needed — actor handles it
+
