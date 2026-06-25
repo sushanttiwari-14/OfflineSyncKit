@@ -53,3 +53,9 @@ Principle: Separation of Concerns
 - try? silently ignores the error and moves on
 - Rule: use try? when failure is acceptable and unrecoverable
 
+## Why Exponential Backoff
+- Fixed interval retries cause thundering herd problem
+- Exponential backoff spreads retries naturally over time
+- Formula: baseDelay * (2 ^ retryCount)
+- Prevents hammering a struggling server
+
