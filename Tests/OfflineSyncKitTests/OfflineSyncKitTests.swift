@@ -103,3 +103,90 @@ import Foundation
         
     }
 }
+
+@MainActor
+@Suite struct SyncManagerTests {
+    
+    @Test func syncSuccessRemovesOperation() async throws {
+        // setup queue
+        let config = ModelConfiguration(isStoredInMemoryOnly: true)
+        let container = try ModelContainer(for: SyncOperation.self, configurations: config)
+        let context = container.mainContext
+        let queue = SyncQueue(context: context)
+        
+        // setup mocks
+        let storage = MockNoteStorage()
+        let apiClient = MockAPIClient()
+        
+        // create sync manager
+        let syncManager = SyncManager(storage: storage, apiClient: apiClient, queue: queue)
+        
+        // save note and enqueue operation
+        let note = Note(title: "Test", content: "Hello")
+        try storage.save(note)
+        let operation = SyncOperation(noteId: note.id, type: .create)
+        try queue.enqueue(operation)
+        
+        // run sync
+        await syncManager.sync()
+        
+        // queue should be empty after success
+        let pending = try queue.pendingOperations()
+        #expect(pending.count == 0)
+    }
+    
+    @Test func syncFailureIncrementsRetryCount() async throws {
+        // setup queue
+        let config = ModelConfiguration(isStoredInMemoryOnly: true)
+        let container = try ModelContainer(for: SyncOperation.self, configurations: config)
+        let context = container.mainContext
+        let queue = SyncQueue(context: context)
+        
+        let storage = MockNoteStorage()
+        let apiClient = MockAPIClient()
+        apiClient.shouldFail = true
+        
+        let syncManager = SyncManager(storage: storage, apiClient: apiClient, queue: queue)
+        
+        let note = Note(title: "Test", content: "Hello")
+        try storage.save(note)
+        let operation = SyncOperation(noteId: note.id, type: .create)
+        try queue.enqueue(operation)
+        
+        await syncManager.sync()
+        
+        // operation should still be in queue with retryCount = 1
+        let pending = try queue.pendingOperations()
+        #expect(pending.count == 0)
+        #expect(operation.retryCount == 1)
+    }
+    
+    @Test func duplicateSyncOnlyRunsOnce() async throws {
+
+        let config = ModelConfiguration(isStoredInMemoryOnly: true)
+        let container = try ModelContainer(for: SyncOperation.self, configurations: config)
+        let context = container.mainContext
+        let queue = SyncQueue(context: context)
+        
+        let storage = MockNoteStorage()
+        let apiClient = MockAPIClient()
+        
+        let syncManager = SyncManager(storage: storage, apiClient: apiClient, queue: queue)
+        
+        let note = Note(title: "Test", content: "Hello")
+        try storage.save(note)
+        let operation = SyncOperation(noteId: note.id, type: .create)
+        try queue.enqueue(operation)
+        
+        // call sync three times simultaneously
+        await withTaskGroup(of: Void.self) { group in
+            group.addTask { await syncManager.sync() }
+            group.addTask { await syncManager.sync() }
+            group.addTask { await syncManager.sync() }
+        }
+        
+        // queue should be empty — operation processed exactly once
+        let pending = try queue.pendingOperations()
+        #expect(pending.count == 0)
+    }
+}
