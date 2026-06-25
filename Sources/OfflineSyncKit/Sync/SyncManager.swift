@@ -5,20 +5,41 @@
 //  Created by sushant tiwari on 18/06/26.
 //
 import Foundation
+
 actor SyncManager {
     private let storage: NoteStorage
     private let apiClient: NoteAPIClientProtocol
     private let queue: SyncQueue
     private let maxRetries = 3
-    private let baseDelay: TimeInterval = 2.0
+    private let baseDelay: Double = 2.0
+    
+    // the stream UI observes
+    let statusStream: AsyncStream<SyncState>
+    
+    // continuation is how we push values INTO the stream
+    private var continuation: AsyncStream<SyncState>.Continuation?
     
     init(storage: NoteStorage, apiClient: NoteAPIClientProtocol, queue: SyncQueue) {
         self.storage = storage
         self.apiClient = apiClient
         self.queue = queue
+        
+        // create stream and capture continuation
+        var streamContinuation: AsyncStream<SyncState>.Continuation?
+        self.statusStream = AsyncStream { continuation in
+            streamContinuation = continuation
+        }
+        self.continuation = streamContinuation
+    }
+    
+    // emit state into the stream
+    private func emit(_ state: SyncState) {
+        continuation?.yield(state)
     }
     
     func sync() async {
+        emit(.syncing)
+        
         do {
             let pending = try queue.pendingOperations()
             print("Sync started — \(pending.count) pending operations")
@@ -27,13 +48,16 @@ actor SyncManager {
                 await processOperation(operation)
             }
             
+            emit(.completed)
             print("Sync completed")
+            
         } catch {
+            emit(.failed(error))
             print("Failed to fetch pending operations: \(error)")
         }
     }
     
-    private func retryDelay(for retryCount: Int) -> TimeInterval {
+    private func retryDelay(for retryCount: Int) -> Double {
         return baseDelay * pow(2.0, Double(retryCount))
     }
     

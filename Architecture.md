@@ -59,3 +59,10 @@ Principle: Separation of Concerns
 - Formula: baseDelay * (2 ^ retryCount)
 - Prevents hammering a struggling server
 
+## Why AsyncStream for status updates
+- SyncManager is an actor — UI can't directly observe its properties
+- AsyncStream bridges actor state to SwiftUI
+- continuation = writing end (SyncManager owns this)
+- statusStream = reading end (UI observes this)
+- Native Swift alternative to Combine publishers
+
