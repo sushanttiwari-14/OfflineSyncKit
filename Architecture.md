@@ -47,3 +47,9 @@ Principle: Separation of Concerns
 - Prevents data races on the operation queue
 - Compiler enforces safety — not the developer
 
+## Why try? on queue.markFailed
+- Already inside a catch block handling sync failure
+- If markFailed also throws, there's no meaningful recovery
+- try? silently ignores the error and moves on
+- Rule: use try? when failure is acceptable and unrecoverable
+
