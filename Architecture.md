@@ -73,3 +73,10 @@ Principle: Separation of Concerns
 - Others wait, find empty queue, exit immediately
 - No extra protection code needed — actor handles it
 
+## Dependency Injection + storage swapping
+- SyncManager depends on NoteStorage, not SwiftDataStorage
+- Storage is injected through the initializer
+- Different implementations (SwiftDataStorage, MockStorage) can be swapped easily
+- SyncManager never changes when storage implementation changes
+- Loose coupling makes testing and maintenance easier
+- No extra refactoring needed — DI handles it
