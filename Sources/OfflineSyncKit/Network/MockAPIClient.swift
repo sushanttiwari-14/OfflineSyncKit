@@ -11,6 +11,8 @@ public final class MockAPIClient: NoteAPIClientProtocol, @unchecked Sendable  {
     // controls whether calls succeed or fail
     public var shouldFail: Bool = false
     
+    public init() {}
+    
     enum MockError: Error {
         case simulatedFailure
     }
