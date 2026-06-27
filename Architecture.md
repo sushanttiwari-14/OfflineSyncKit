@@ -1,4 +1,23 @@
 
+# OfflineSyncKit Architecture
+
+## Overview
+SwiftUI Demo App
+       ↓
+OfflineSyncKit (Swift Package)
+       ↓
+  SyncManager (actor)
+   ↙              ↘
+NoteStorage    NoteAPIClientProtocol
+Protocol       Protocol
+   ↓               ↓
+SwiftDataNoteStorage  MockAPIClient
+(SwiftData)           (Fake Server)
+       ↓
+SyncQueue (persisted operations)
+       ↓
+NetworkMonitor (auto-triggers sync)
+
 ## Target vs Product
 - Target: a unit of code SPM compiles (one module)
 - Product: wraps targets and exposes them to the outside world
