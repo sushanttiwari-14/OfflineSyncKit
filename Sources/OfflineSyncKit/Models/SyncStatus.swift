@@ -5,7 +5,7 @@
 //  Created by sushant tiwari on 22/06/26.
 //
 
-enum SyncStatus: String, Codable {
+public enum SyncStatus: String, Codable {
     case pending
     case inProgress
     case completed

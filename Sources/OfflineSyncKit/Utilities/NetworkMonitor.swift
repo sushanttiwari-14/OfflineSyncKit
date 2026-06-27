@@ -8,16 +8,16 @@
 import Network
 import Foundation
 
-final class NetworkMonitor {
+public final class NetworkMonitor {
     private let monitor = NWPathMonitor()
     private let queue = DispatchQueue(label: "NetworkMonitor")
     private var syncManager: SyncManager?
     
-    init(syncManager: SyncManager) {
+    public init(syncManager: SyncManager) {
         self.syncManager = syncManager
     }
     
-    func startMonitoring() {
+    public func startMonitoring() {
         monitor.pathUpdateHandler = { [weak self] path in
             if path.status == .satisfied {
                 print("Network available — triggering sync")
@@ -31,7 +31,7 @@ final class NetworkMonitor {
         monitor.start(queue: queue)
     }
     
-    func stopMonitoring() {
+    public func stopMonitoring() {
         monitor.cancel()
     }
 }

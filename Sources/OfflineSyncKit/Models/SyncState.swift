@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum SyncState {
+public enum SyncState {
     case idle
     case syncing
     case failed(Error)

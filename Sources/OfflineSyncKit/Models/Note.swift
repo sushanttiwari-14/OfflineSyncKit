@@ -8,14 +8,14 @@
 import SwiftData
 import Foundation
 
-@Model class Note {
-    var id: UUID
-    var title: String
-    var content: String
-    var createdAt: Date
-    var updatedAt: Date
+@Model public class Note {
+    public var id: UUID
+    public var title: String
+    public var content: String
+    public var createdAt: Date
+    public var updatedAt: Date
     
-    init(id: UUID = UUID(), title: String, content: String, createdAt: Date = Date(), updatedAt: Date = Date()) {
+    public init(id: UUID = UUID(), title: String, content: String, createdAt: Date = Date(), updatedAt: Date = Date()) {
         self.id = id
         self.title = title
         self.content = content

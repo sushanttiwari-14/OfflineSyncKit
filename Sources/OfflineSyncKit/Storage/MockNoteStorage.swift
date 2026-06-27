@@ -5,22 +5,22 @@
 //  Created by sushant tiwari on 19/06/26.
 //
 
-final class MockNoteStorage: NoteStorage, @unchecked Sendable {
+public final class MockNoteStorage: NoteStorage, @unchecked Sendable {
     private var notes: [Note] = []
     
-    func save(_ note: Note) throws {
+    public func save(_ note: Note) throws {
         notes.append(note)
     }
     
-    func fetchAll() throws -> [Note] {
+    public func fetchAll() throws -> [Note] {
         return notes
     }
     
-    func delete(_ note: Note) throws {
+    public func delete(_ note: Note) throws {
         notes.removeAll { $0.id == note.id }
     }
     
-    func update(_ note: Note) throws {
+    public func update(_ note: Note) throws {
         if let index = notes.firstIndex(where: { $0.id == note.id }) {
             notes[index] = note
         }

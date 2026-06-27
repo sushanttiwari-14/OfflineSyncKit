@@ -6,7 +6,7 @@
 //
 import Foundation
 
-actor SyncManager {
+public actor SyncManager {
     private let storage: NoteStorage
     private let apiClient: NoteAPIClientProtocol
     private let queue: SyncQueue
@@ -14,12 +14,12 @@ actor SyncManager {
     private let baseDelay: Double = 2.0
     
     // the stream UI observes
-    let statusStream: AsyncStream<SyncState>
+    public let statusStream: AsyncStream<SyncState>
     
     // continuation is how we push values INTO the stream
     private var continuation: AsyncStream<SyncState>.Continuation?
     
-    init(storage: NoteStorage, apiClient: NoteAPIClientProtocol, queue: SyncQueue) {
+    public init(storage: NoteStorage, apiClient: NoteAPIClientProtocol, queue: SyncQueue) {
         self.storage = storage
         self.apiClient = apiClient
         self.queue = queue
@@ -37,7 +37,7 @@ actor SyncManager {
         continuation?.yield(state)
     }
     
-    func sync() async {
+    public func sync() async {
         emit(.syncing)
         
         do {

@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol NoteAPIClientProtocol : Sendable {
+public protocol NoteAPIClientProtocol : Sendable {
     func createNote(_ note: Note) async throws
     func updateNote(_ note: Note) async throws
     func deleteNote(_ noteId: UUID) async throws

@@ -8,21 +8,21 @@
 import Foundation
 import SwiftData
 
-@Model class SyncOperation {
-    var id: UUID
-    var noteId: UUID
-    var type: OperationType
-    var status: String
-    var retryCount: Int
-    var createdAt: Date
+@Model public class SyncOperation {
+    public var id: UUID
+    public var noteId: UUID
+    public var type: OperationType
+    public var status: String
+    public var retryCount: Int
+    public var createdAt: Date
     
-    enum OperationType: String, Codable {
+    public enum OperationType: String, Codable {
         case create
         case update
         case delete
     }
     
-    init(noteId: UUID, type: OperationType) {
+    public init(noteId: UUID, type: OperationType) {
         self.id = UUID()
         self.noteId = noteId
         self.type = type

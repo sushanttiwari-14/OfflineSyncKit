@@ -7,23 +7,23 @@
 
 import Foundation
 
-final class MockAPIClient: NoteAPIClientProtocol, @unchecked Sendable  {
+public final class MockAPIClient: NoteAPIClientProtocol, @unchecked Sendable  {
     // controls whether calls succeed or fail
-    var shouldFail: Bool = false
+    public var shouldFail: Bool = false
     
     enum MockError: Error {
         case simulatedFailure
     }
     
-    func createNote(_ note: Note) async throws {
+    public func createNote(_ note: Note) async throws {
         if shouldFail { throw MockError.simulatedFailure }
     }
     
-    func updateNote(_ note: Note) async throws {
+    public func updateNote(_ note: Note) async throws {
         if shouldFail { throw MockError.simulatedFailure }
     }
     
-    func deleteNote(_ noteId: UUID) async throws {
+    public func deleteNote(_ noteId: UUID) async throws {
         if shouldFail { throw MockError.simulatedFailure }
     }
 }
