@@ -16,9 +16,8 @@ Fully tested with Swift Testing
 
 ## Architecture
 SwiftUI App → SyncManager (actor) → NoteStorage Protocol → SwiftData  
-                                  → NoteAPIClientProtocol → Your API  
-                    ↓  
-             SyncQueue (SwiftData) + NetworkMonitor  
+                                  → NoteAPIClientProtocol → Your API → 
+                                    SyncQueue (SwiftData) + NetworkMonitor  
 
 ## What I learned building this
 Swift Package Manager, SwiftData, Protocols and Dependency Injection, Async/Await and Actors, AsyncStream, Exponential Backoff, NWPathMonitor, Swift Testing
